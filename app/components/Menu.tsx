@@ -1,11 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { menuData, PuntoVentaData } from "@/app/data/menuData";
 import Link from "next/link";
 import { Menu as MenuIcon, X, ChevronRight, User } from "lucide-react";
 
 type PuntoVenta = keyof typeof menuData;
+
+type MenuProps = {
+  onPointChange?: (point: PuntoVenta) => void;
+  onMenuStateChange?: (isOpen: boolean) => void;
+};
 
 const getUserName = (point: PuntoVenta): string => {
   const userNames: Record<PuntoVenta, string> = {
@@ -16,12 +21,26 @@ const getUserName = (point: PuntoVenta): string => {
   return userNames[point];
 };
 
-const Menu = () => {
+const Menu = ({ onPointChange, onMenuStateChange }: MenuProps) => {
   const [selectedPoint, setSelectedPoint] = useState<PuntoVenta>("Punto venta 01");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isPuntosOpen, setIsPuntosOpen] = useState(false);
 
   const menu: PuntoVentaData = menuData[selectedPoint];
+
+  // Efecto para notificar al componente padre cuando cambie el punto seleccionado
+  useEffect(() => {
+    if (onPointChange) {
+      onPointChange(selectedPoint);
+    }
+  }, [selectedPoint, onPointChange]);
+
+  // Efecto para notificar al componente padre cuando cambie el estado del menú
+  useEffect(() => {
+    if (onMenuStateChange) {
+      onMenuStateChange(isMenuOpen);
+    }
+  }, [isMenuOpen, onMenuStateChange]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
