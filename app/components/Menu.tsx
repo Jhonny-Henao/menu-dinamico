@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { menuData, PuntoVentaData } from "@/app/data/menuData";
 import Link from "next/link";
-import { Menu as MenuIcon, X } from "lucide-react";
+import { Menu as MenuIcon, X, ChevronRight } from "lucide-react";
 
 type PuntoVenta = keyof typeof menuData;
 
@@ -19,16 +19,27 @@ const getUserName = (point: PuntoVenta): string => {
 const Menu = () => {
   const [selectedPoint, setSelectedPoint] = useState<PuntoVenta>("Punto venta 01");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isPuntosOpen, setIsPuntosOpen] = useState(false);
 
   const menu: PuntoVentaData = menuData[selectedPoint];
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+    if (isPuntosOpen) setIsPuntosOpen(false);
+  };
+
+  const togglePuntosMenu = () => {
+    setIsPuntosOpen(!isPuntosOpen);
+  };
+
+  const selectPuntoVenta = (punto: PuntoVenta) => {
+    setSelectedPoint(punto);
+    setIsPuntosOpen(false);
   };
 
   return (
     <>
-      {/* Hamburger Menu Button - Only visible when menu is closed */}
+      {/* Boton Menu Hamburguesa */}
       {!isMenuOpen && (
         <button 
           onClick={toggleMenu} 
@@ -38,27 +49,24 @@ const Menu = () => {
         </button>
       )}
 
-      {/* Mobile Menu */}
+      {/* Menú Movil */}
       <div className={`
         md:hidden fixed top-0 left-0 w-full h-full bg-white z-40 transition-all duration-300 flex flex-col
         ${isMenuOpen ? 'translate-y-0' : '-translate-y-full'}
       `}>
-        {/* Header with Punto de Venta Selector and Close Button */}
+        {/* Encabezado con Selector de Punto de Venta y Botón Cerrar  */}
         <div 
           className="p-4 border-b border-gray-200 flex-shrink-0 flex items-center justify-between"
           style={{ backgroundColor: menu.color }}
         >
-          <select 
-            value={selectedPoint} 
-            onChange={(e) => setSelectedPoint(e.target.value as PuntoVenta)}
-            className="flex-grow px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-[85%]"
+          {/* Reemplazamos el select por un botón que activa el menú de puntos de venta */}
+          <button 
+            onClick={togglePuntosMenu}
+            className="flex-grow px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-[85%] text-left flex items-center justify-between"
           >
-            {Object.keys(menuData).map((punto) => (
-              <option key={punto} value={punto}>
-                {punto}
-              </option>
-            ))}
-          </select>
+            <span>{selectedPoint}</span>
+            <ChevronRight size={16} className={`transition-transform ${isPuntosOpen ? 'rotate-90' : ''}`} />
+          </button>
           
           <button 
             onClick={toggleMenu} 
@@ -68,9 +76,27 @@ const Menu = () => {
           </button>
         </div>
 
-        {/* Scrollable Content Area */}
+        {/* Menú desplegable de Puntos de Venta (Mobile) */}
+        {isPuntosOpen && (
+          <div className="absolute top-[72px] left-4 right-4 bg-white rounded-md shadow-lg border border-gray-200 z-50">
+            <ul className="py-2">
+              {Object.keys(menuData).map((punto) => (
+                <li key={punto}>
+                  <button
+                    onClick={() => selectPuntoVenta(punto as PuntoVenta)}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-100 ${punto === selectedPoint ? 'bg-gray-50 font-medium' : ''}`}
+                  >
+                    {punto}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Scroll */}
         <div className="flex-grow overflow-y-auto">
-          {/* Menu Items (Mobile - Full Width) */}
+          {/* Elementos del menú (Móvil - Ancho completo) */}
           <nav className="py-4">
             <ul className="space-y-2 px-4">
               {menu.items.map((item) => (
@@ -92,7 +118,7 @@ const Menu = () => {
               ))}
             </ul>
 
-            {/* Roles Section (Mobile) */}
+            {/* Seccion de Roles (Movil) */}
             {menu.roles && (
               <div className="px-4 mt-4 pt-4 border-t border-gray-200">
                 <h4 className="text-xs text-gray-500 uppercase tracking-wider mb-2">Otros Roles</h4>
@@ -118,7 +144,7 @@ const Menu = () => {
           </nav>
         </div>
 
-        {/* User Profile (Mobile) - Fixed at bottom */}
+        {/* Perfil de usuario (Movil) */}
         <div className="p-4 border-t border-gray-200 flex items-center space-x-3 flex-shrink-0">
           <img 
             src={`/users/${selectedPoint}.jpg`} 
@@ -132,7 +158,7 @@ const Menu = () => {
         </div>
       </div>
 
-      {/* Desktop Menu (Vertical) - Original Layout */}
+      {/* Menú del escritorio (vertical) */}
       <aside 
         className={`
           hidden md:flex fixed left-0 top-0 h-full w-64 bg-white shadow-lg transition-all duration-300 ease-in-out 
@@ -140,22 +166,19 @@ const Menu = () => {
           ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
       >
-        {/* Header with Punto de Venta Selector and Close Button */}
+        {/* Encabezado con Selector de Punto de Venta y Botón Cerrar */}
         <div 
-          className="p-4 border-b border-gray-200 flex items-center justify-between"
+          className="p-4 border-b border-gray-200 flex items-center justify-between relative"
           style={{ backgroundColor: menu.color }}
         >
-          <select 
-            value={selectedPoint} 
-            onChange={(e) => setSelectedPoint(e.target.value as PuntoVenta)}
-            className="flex-grow px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-[80%]"
+          {/* Reemplazamos el select por un botón que activa el menú de puntos de venta */}
+          <button 
+            onClick={togglePuntosMenu}
+            className="flex-grow px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-[80%] text-left flex items-center justify-between"
           >
-            {Object.keys(menuData).map((punto) => (
-              <option key={punto} value={punto}>
-                {punto}
-              </option>
-            ))}
-          </select>
+            <span>{selectedPoint}</span>
+            <ChevronRight size={16} className={`transition-transform ${isPuntosOpen ? 'rotate-90' : ''}`} />
+          </button>
           
           <button 
             onClick={toggleMenu} 
@@ -163,9 +186,27 @@ const Menu = () => {
           >
             <X size={20} />
           </button>
+
+          {/* Menú desplegable de Puntos de Venta (Desktop) */}
+          {isPuntosOpen && (
+            <div className="absolute top-[56px] left-4 right-4 bg-white rounded-md shadow-lg border border-gray-200 z-50">
+              <ul className="py-2">
+                {Object.keys(menuData).map((punto) => (
+                  <li key={punto}>
+                    <button
+                      onClick={() => selectPuntoVenta(punto as PuntoVenta)}
+                      className={`w-full text-left px-4 py-2 hover:bg-gray-100 ${punto === selectedPoint ? 'bg-gray-50 font-medium' : ''}`}
+                    >
+                      {punto}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
 
-        {/* Menu Items */}
+        {/* Elementos del Menú */}
         <nav className="flex-grow overflow-y-auto py-4">
           <ul className="space-y-2 px-4">
             {menu.items.map((item) => (
@@ -186,7 +227,7 @@ const Menu = () => {
             ))}
           </ul>
 
-          {/* Roles Section */}
+          {/* Seccion de Roles */}
           {menu.roles && (
             <div className="px-4 mt-4 pt-4 border-t border-gray-200">
               <h4 className="text-xs text-gray-500 uppercase tracking-wider mb-2">Otros Roles</h4>
@@ -210,7 +251,7 @@ const Menu = () => {
           )}
         </nav>
 
-        {/* User Profile */}
+        {/* Perfil de Usuario */}
         <div className="p-4 border-t border-gray-200 flex items-center space-x-3">
           <img 
             src={`/users/${selectedPoint}.jpg`} 
@@ -224,9 +265,7 @@ const Menu = () => {
         </div>
       </aside>
 
-      {/* Content Padding for Desktop - To prevent content from being hidden under the menu */}
       <div className="md:pl-16">
-        {/* Your main content goes here */}
       </div>
     </>
   );
