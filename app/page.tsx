@@ -8,7 +8,7 @@ export default function Home() {
       {/* Contenedor principal */}
 
       <div className="container mx-auto px-4 py-8 flex-grow">         
-        <h1 className="text-4xl font-bold text-center text-gray-800 mb-6 md:text-5xl lg:text-6xl">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-6xl font-bold text-center text-gray-800 mb-6">
           Menú Dinámico
         </h1>
 
