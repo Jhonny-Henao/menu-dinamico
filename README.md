@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Menú Dinámico
 
-## Getting Started
+Un componente de menú lateral dinámico desarrollado con Next.js y TypeScript que permite visualizar diferentes opciones según el punto de venta seleccionado.
 
-First, run the development server:
+## Características
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Menú lateral responsive con diseño adaptado para móvil y escritorio
+- Cambio dinámico de opciones según el punto de venta seleccionado
+- Soporte para múltiples puntos de venta con configuración personalizada
+- Indicadores visuales (badges y dots) para elementos del menú
+- Interfaz de usuario intuitiva con animaciones de transición
+- Diseño basado en componentes con TypeScript para type safety
+
+## Tecnologías utilizadas
+
+- **Next.js**: Framework de React para renderizado del lado del servidor
+- **TypeScript**: Para tipado estático y mejor autocompletado
+- **Tailwind CSS**: Framework de CSS utilizado para los estilos
+- **Lucide Icons**: Biblioteca de iconos para la interfaz
+- **React Hooks**: useState y useEffect para manejar el estado del componente
+
+## Estructura del proyecto
+
+```
+├── app/
+│   ├── components/
+│   │   └── Menu.tsx                # Componente principal del menú
+│   │   └── Layout.tsx              # Componente de layout que estructura las páginas
+│   ├── data/
+│   │   └── menuData.ts             # Configuración del menú para cada punto de venta
+│   ├── globals.css                 # Estilos globales de la aplicación
+│   ├── layout.tsx                  # Layout principal que incluye el menú
+│   └── page.tsx                    # Página principal
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Instalación
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clona el repositorio:
+```bash
+git clone https://github.com/tuusuario/menu-dinamico.git
+cd menu-dinamico
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. Instala las dependencias:
+```bash
+npm install
+```
 
-## Learn More
+3. Ejecuta el servidor de desarrollo:
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+4. Abre tu navegador en [http://localhost:3000](http://localhost:3000)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Uso
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Configuración del Menú
 
-## Deploy on Vercel
+Los menús para cada punto de venta se configuran en el archivo `menuData.ts`:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Props del componente Menu
+
+| Prop | Tipo | Descripción |
+|------|------|-------------|
+| `onPointChange` | `(point: string) => void` | Función que se llama cuando cambia el punto de venta seleccionado |
+| `onMenuStateChange` | `(isOpen: boolean) => void` | Función que se llama cuando cambia el estado de apertura del menú |
+
+## Licencia
+
+MIT
