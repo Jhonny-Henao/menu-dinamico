@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { menuData, PuntoVentaData } from "@/app/data/menuData";
 import Link from "next/link";
-import { Menu as MenuIcon, X, ChevronRight } from "lucide-react";
+import { Menu as MenuIcon, X, ChevronRight, User } from "lucide-react";
 
 type PuntoVenta = keyof typeof menuData;
 
@@ -146,11 +146,9 @@ const Menu = () => {
 
         {/* Perfil de usuario (Movil) */}
         <div className="p-4 border-t border-gray-200 flex items-center space-x-3 flex-shrink-0">
-          <img 
-            src={`/users/${selectedPoint}.jpg`} 
-            alt="User avatar" 
-            className="w-10 h-10 rounded-full object-cover"
-          />
+          <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
+            <User size={24} />
+          </div>
           <div>
             <p className="text-sm font-semibold">{getUserName(selectedPoint)}</p>
             <p className="text-xs text-gray-500">ID: 01</p>
@@ -253,11 +251,9 @@ const Menu = () => {
 
         {/* Perfil de Usuario */}
         <div className="p-4 border-t border-gray-200 flex items-center space-x-3">
-          <img 
-            src={`/users/${selectedPoint}.jpg`} 
-            alt="User avatar" 
-            className="w-10 h-10 rounded-full object-cover"
-          />
+          <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
+            <User size={24} />
+          </div>
           <div>
             <p className="text-sm font-semibold">{getUserName(selectedPoint)}</p>
             <p className="text-xs text-gray-500">ID: 01</p>
