@@ -182,7 +182,7 @@ const Menu = () => {
           
           <button 
             onClick={toggleMenu} 
-            className="ml-2 p-1 rounded-full bg-white/20 hover:bg-white/40 text-gray-800 hover:text-white transition-colors cursor-pointer"
+            className="ml-2 p-1 rounded-full bg-white/20 hover:bg-white/40 text-gray-800 transition-colors cursor-pointer"
           >
             <X size={20} />
           </button>
