@@ -35,6 +35,7 @@ export default function Home() {
             onMenuStateChange={handleMenuStateChange}
           /> 
           {/* Pasamos las funciones de callback al componente Menu */}
+          {/* Cambios hecho por jhonny */}
         </div>
       </div>
     </div>
